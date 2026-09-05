@@ -1,10 +1,1 @@
-export default function CourseLoading() {
-  return (
-    <div className="py-12 flex items-center justify-center">
-      <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
-        <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-        <span className="text-lg">Loading course...</span>
-      </div>
-    </div>
-  );
-}
+export default function LoadingCourse(){return <section className="loading-state" role="status" aria-live="polite"><p>Loading course…</p><div aria-hidden="true"><div className="skeleton title"/><div className="skeleton"/><div className="skeleton short"/><div className="skeleton block"/></div></section>;}
