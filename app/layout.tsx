@@ -51,7 +51,7 @@ export default function RootLayout({
         <footer className="border-t border-slate-200 bg-white py-6 text-center text-sm text-slate-500">
           <div className="mx-auto max-w-6xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>Учебный проект — Каталог курсов</span>
-            <span>Лабораторная работа · Продвинутые веб-технологии</span>
+            
           </div>
         </footer>
       </body>

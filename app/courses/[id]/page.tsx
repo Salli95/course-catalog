@@ -139,10 +139,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
             </dl>
 
             <div className="pt-2">
-              <LikeButton key={course.id} initialLikes={course.likes} />
-              <p className="mt-2 text-center text-xs text-slate-400">
-                Лайки сохраняются на время текущей сессии
-              </p>
+              <LikeButton key={course.id} courseId={course.id} initialLikes={course.likes} />
+              
             </div>
           </div>
         </aside>
