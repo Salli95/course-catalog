@@ -1,9 +1,92 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-export const metadata:Metadata={title:"About the project"};
+
+export const metadata: Metadata = {
+  title: "О проекте",
+  description: "Информация о лабораторной работе и учебном каталоге курсов",
+};
+
 export default function AboutPage() {
- return <><section className="about-hero"><span className="eyebrow">ABOUT FORMA</span><h1>A place to start.<br/><em>Room to grow.</em></h1><p>Forma is a course catalog built for Advanced Web Technologies. It brings six areas of modern web development into one place, so you can explore topics and choose what to learn next. This is the starting point of a semester project, with more to come in future labs.</p></section>
- <div className="about-grid"><article><span className="eyebrow">01 / EXPLORE</span><h2>See the bigger picture.</h2><p>Frontend, backend, databases, API design, security and AI: discover how each part contributes to an application.</p></article><article><span className="eyebrow">02 / CHOOSE</span><h2>Find your direction.</h2><p>Search by title, compare credits and separate required courses from electives.</p></article><article><span className="eyebrow">03 / CONNECT</span><h2>Build on what you know.</h2><p>Read suggested topics and prerequisites, then follow related courses to explore the next part of your learning path.</p></article></div>
- <Link href="/courses" className="button primary">Explore the courses ↗</Link>
- <section className="faq"><h2>A few things to know</h2><details><summary>Can I enrol in a course here?</summary><p>This is a student catalog project, not an enrolment service. You can explore course information, but enrolment and lessons are not available here.</p></details><details><summary>Are the topics an official syllabus?</summary><p>The six course records come from Lab 1. The expanded topics, outcomes and prerequisites are illustrative study suggestions added to help you explore each subject.</p></details><details><summary>How do likes work?</summary><p>Each click adds one like during your current page visit. Reloading restores the sample count. Likes are not shared with other users.</p></details><details><summary>Can I share a filtered selection?</summary><p>Yes. Apply your search and filters, then copy the page address. Opening it restores the same search, course type and sorting.</p></details></section></>;
+  return (
+    <div className="mx-auto max-w-3xl space-y-8">
+      <div>
+        <h1 className="text-3xl font-extrabold text-slate-900">
+          О проекте
+        </h1>
+        <p className="mt-2 text-base text-slate-600">
+          Учебный проект каталога курсов, созданный в рамках изучения дисциплины «Продвинутые веб-технологии».
+        </p>
+      </div>
+
+      <section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+        <h2 className="text-xl font-bold text-slate-900">
+          Цели работы и используемые технологии
+        </h2>
+        <p className="text-sm leading-relaxed text-slate-600">
+          Основная цель проекта — освоение современного стека веб-разработки:
+        </p>
+        <ul className="list-disc space-y-1.5 pl-5 text-sm text-slate-700">
+          <li>
+            <strong>Next.js 16 (App Router):</strong> маршрутизация на основе файловой структуры, генерация статических страниц (SSG), динамические параметры роутов.
+          </li>
+          <li>
+            <strong>React 19 Server Components:</strong> практически все страницы и карточки рендерятся на сервере без отправки лишнего JavaScript клиенту.
+          </li>
+          <li>
+            <strong>Client Component:</strong> кнопка лайка изолирована в отдельный клиентский компонент с локальным хуком <code>useState</code>.
+          </li>
+          <li>
+            <strong>TypeScript:</strong> строгая типизация данных курсов и пропсов компонентов.
+          </li>
+          <li>
+            <strong>Tailwind CSS:</strong> адаптивная вёрстка и аккуратный дизайн интерфейса.
+          </li>
+        </ul>
+
+        <div className="pt-2">
+          <Link
+            href="/courses"
+            className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+          >
+            Перейти к списку курсов →
+          </Link>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-slate-900">
+          Часто задаваемые вопросы
+        </h2>
+
+        <div className="space-y-3">
+          <details className="group rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+            <summary className="cursor-pointer font-semibold text-slate-900">
+              Можно ли записаться на курс через этот сайт?
+            </summary>
+            <p className="mt-2 text-sm text-slate-600">
+              Нет, это демонстрационный учебный каталог. Функционал реальной авторизации и записи на курсы не предусмотрен заданием.
+            </p>
+          </details>
+
+          <details className="group rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+            <summary className="cursor-pointer font-semibold text-slate-900">
+              Как работают лайки?
+            </summary>
+            <p className="mt-2 text-sm text-slate-600">
+              Кнопка лайка работает через локальное состояние React (<code>useState</code>). При перезагрузке страницы значение возвращается к исходному моковому значению.
+            </p>
+          </details>
+
+          <details className="group rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+            <summary className="cursor-pointer font-semibold text-slate-900">
+              Как работает фильтрация и поиск?
+            </summary>
+            <p className="mt-2 text-sm text-slate-600">
+              Поиск и фильтры передаются через стандартные параметры URL (query string). Это позволяет делиться ссылкой с уже выбранными фильтрами.
+            </p>
+          </details>
+        </div>
+      </section>
+    </div>
+  );
 }

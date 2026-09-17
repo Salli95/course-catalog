@@ -19,10 +19,14 @@
 
 # production
 /build
+tmp/
 
 # misc
 .DS_Store
 *.pem
+*.docx
+AGENTS.md
+CLAUDE.md
 
 # debug
 npm-debug.log*

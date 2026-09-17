@@ -5,24 +5,168 @@ import { getCourse, getCourses } from "@/lib/courses";
 import { detailsFor } from "@/lib/course-details";
 import LikeButton from "@/components/LikeButton";
 import CourseCard from "@/components/CourseCard";
-type CoursePageProps = {params:Promise<{id:string}>};
-export async function generateStaticParams() { return (await getCourses()).map(c=>({id:c.id})); }
-export async function generateMetadata({params}:CoursePageProps):Promise<Metadata> {
- const {id}=await params;
- const course=await getCourse(id);
- return {title:course?.title ?? "Course not found",description:course?.description};
+
+type CoursePageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateStaticParams() {
+  const allCourses = await getCourses();
+  return allCourses.map((c) => ({
+    id: c.id,
+  }));
 }
-export default async function CoursePage({params}:CoursePageProps) {
- const {id}=await params;
- const course=await getCourse(id);
- if(!course) notFound();
- const details=detailsFor(id);
- const related=(await getCourses()).filter(c=>c.id!==id).slice(0,3);
- return <>
- <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/courses">← All courses</Link><span>/</span><span>{details.area}</span></nav>
- <section className="detail-hero"><div><span className="eyebrow">{details.area} / {course.isElective?"ELECTIVE":"REQUIRED"}</span><h1>{course.title}</h1><p>{course.description}</p></div><div className={`detail-art ${details.color}`} aria-hidden="true">{details.symbol}</div></section>
- <div className="detail-layout"><section className="detail-content"><h2>What you can work towards</h2><p>{details.outcome}</p><h2>Topics to explore</h2><ol className="topic-list">{details.topics.map(topic=><li key={topic}>{topic}</li>)}</ol><h2>Before you start</h2><p>{details.prerequisites}</p></section>
- <aside className="fact-panel"><h2>At a glance</h2><dl><div><dt>Credits</dt><dd>{course.credits}</dd></div><div><dt>Course type</dt><dd>{course.isElective?"Elective":"Required"}</dd></div><div><dt>Area</dt><dd>{details.area}</dd></div></dl><LikeButton key={course.id} initialLikes={course.likes}/><p className="fact-note">Show this course some appreciation.<br/>Likes are local to this page visit.</p></aside></div>
- <section className="related"><div className="section-heading"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Connect the dots.</h2></div><Link href="/courses" className="text-link">All courses ↗</Link></div><div className="course-grid">{related.map(c=><CourseCard key={c.id} id={c.id} title={c.title} description={c.description} credits={c.credits} likes={c.likes}/>)}</div></section>
- </>;
+
+export async function generateMetadata({
+  params,
+}: CoursePageProps): Promise<Metadata> {
+  const { id } = await params;
+  const course = await getCourse(id);
+  return {
+    title: course?.title ?? "Курс не найден",
+    description: course?.description,
+  };
+}
+
+export default async function CoursePage({ params }: CoursePageProps) {
+  const { id } = await params;
+  const course = await getCourse(id);
+
+  if (!course) {
+    notFound();
+  }
+
+  const details = detailsFor(id);
+  const allCourses = await getCourses();
+  const relatedCourses = allCourses.filter((c) => c.id !== id).slice(0, 3);
+
+  return (
+    <div className="space-y-8">
+      <nav className="text-sm text-slate-500">
+        <Link href="/courses" className="hover:text-blue-600 hover:underline">
+          ← Все курсы
+        </Link>
+        <span className="mx-2">/</span>
+        <span className="text-slate-800 font-medium">{details.area}</span>
+      </nav>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">
+            {details.area}
+          </span>
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-bold ${
+              course.isElective
+                ? "bg-amber-100 text-amber-800"
+                : "bg-blue-100 text-blue-800"
+            }`}
+          >
+            {course.isElective ? "Курс по выбору" : "Обязательный курс"}
+          </span>
+        </div>
+
+        <h1 className="mt-3 text-2xl font-extrabold text-slate-900 sm:text-3xl">
+          {course.title}
+        </h1>
+        <p className="mt-2 text-base text-slate-600 max-w-2xl">
+          {course.description}
+        </p>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+        <section className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">
+              Чему вы научитесь
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              {details.outcome}
+            </p>
+          </div>
+
+          <hr className="border-slate-100" />
+
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">
+              Основные темы курса
+            </h2>
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {details.topics.map((topic, index) => (
+                <li key={topic} className="flex items-start gap-2.5">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">
+                    {index + 1}
+                  </span>
+                  <span>{topic}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <hr className="border-slate-100" />
+
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">
+              Предварительные требования
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              {details.prerequisites}
+            </p>
+          </div>
+        </section>
+
+        <aside className="space-y-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4">
+            <h2 className="text-base font-bold text-slate-900">
+              Информация о курсе
+            </h2>
+
+            <dl className="divide-y divide-slate-100 text-sm">
+              <div className="flex justify-between py-2.5">
+                <dt className="text-slate-500">Кредиты</dt>
+                <dd className="font-semibold text-slate-900">{course.credits}</dd>
+              </div>
+              <div className="flex justify-between py-2.5">
+                <dt className="text-slate-500">Тип курса</dt>
+                <dd className="font-semibold text-slate-900">
+                  {course.isElective ? "По выбору" : "Обязательный"}
+                </dd>
+              </div>
+              <div className="flex justify-between py-2.5">
+                <dt className="text-slate-500">Направление</dt>
+                <dd className="font-semibold text-slate-900">{details.area}</dd>
+              </div>
+            </dl>
+
+            <div className="pt-2">
+              <LikeButton key={course.id} initialLikes={course.likes} />
+              <p className="mt-2 text-center text-xs text-slate-400">
+                Лайки сохраняются на время текущей сессии
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      {relatedCourses.length > 0 && (
+        <section className="space-y-4 pt-6">
+          <h2 className="text-xl font-bold text-slate-900">
+            Другие курсы из каталога
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {relatedCourses.map((c) => (
+              <CourseCard
+                key={c.id}
+                id={c.id}
+                title={c.title}
+                description={c.description}
+                credits={c.credits}
+                likes={c.likes}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
 }
