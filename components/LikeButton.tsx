@@ -24,6 +24,7 @@ export default function LikeButton({
       if (saved !== null) {
         const parsed = parseInt(saved, 10);
         if (!isNaN(parsed)) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setLikes(parsed);
         }
       }
