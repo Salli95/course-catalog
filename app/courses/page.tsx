@@ -39,8 +39,8 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-        <aside className="h-fit rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+      <div className="grid gap-5 lg:gap-8 lg:grid-cols-[260px_1fr]">
+        <aside className="h-fit rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xs">
           <Form action="/courses" className="space-y-5" key={JSON.stringify([q, type, sort])}>
             <div>
               <label htmlFor="search-input" className="block text-xs font-bold uppercase tracking-wider text-slate-700">
@@ -53,7 +53,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                 placeholder="Например: React"
                 defaultValue={q}
                 maxLength={200}
-                className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               />
             </div>
 
@@ -73,7 +73,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                       name="type"
                       value={val}
                       defaultChecked={type === val}
-                      className="text-blue-600 focus:ring-blue-500"
+                      className="text-emerald-600 focus:ring-emerald-500"
                     />
                     <span>{label}</span>
                   </label>
@@ -89,7 +89,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                 id="sort-select"
                 name="sort"
                 defaultValue={sort}
-                className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 bg-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               >
                 <option value="default">По умолчанию</option>
                 <option value="popular">По лайкам</option>
@@ -101,13 +101,13 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
             <div className="space-y-2 pt-2">
               <button
                 type="submit"
-                className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+                className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 cursor-pointer shadow-xs"
               >
                 Применить фильтры
               </button>
               <Link
                 href="/courses"
-                className="block text-center text-xs font-medium text-slate-500 hover:text-slate-800"
+                className="block text-center text-xs font-medium text-slate-500 hover:text-emerald-700"
               >
                 Сбросить фильтры
               </Link>
@@ -127,7 +127,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
           </div>
 
           {filtered.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
               {filtered.map((course) => (
                 <CourseCard
                   key={course.id}

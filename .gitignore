@@ -27,6 +27,7 @@ tmp/
 *.docx
 AGENTS.md
 CLAUDE.md
+TUTUR.md
 
 # debug
 npm-debug.log*

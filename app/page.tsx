@@ -9,28 +9,28 @@ export default async function HomePage() {
     .slice(0, 3);
 
   return (
-    <div className="space-y-10">
-      <section className="rounded-2xl border border-sky-100 bg-white p-8 sm:p-10 shadow-xs">
-        <div className="max-w-2xl space-y-4">
-          <span className="inline-block rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 border border-sky-100">
+    <div className="space-y-6 sm:space-y-10">
+      <section className="rounded-2xl border border-emerald-100 bg-white p-5 sm:p-8 shadow-xs">
+        <div className="max-w-2xl space-y-3 sm:space-y-4">
+          <span className="inline-block rounded-full bg-emerald-50 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-semibold text-emerald-800 border border-emerald-100">
             Лабораторная работа · Продвинутые веб-технологии
           </span>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl leading-tight">
             Каталог курсов по веб-разработке
           </h1>
-          <p className="text-base leading-relaxed text-slate-600">
+          <p className="text-sm sm:text-base leading-relaxed text-slate-600">
             Учебный проект для выбора и изучения курсов: современный фронтенд на React и Next.js, бэкенд на Python и FastAPI, базы данных и интеграция с LLM.
           </p>
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 pt-2">
             <Link
               href="/courses"
-              className="inline-flex items-center rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-700 shadow-xs"
+              className="inline-flex justify-center items-center rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 shadow-xs text-center"
             >
               Смотреть все курсы ({courses.length}) →
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-sky-50"
+              className="inline-flex justify-center items-center rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-emerald-50 text-center"
             >
               О проекте
             </Link>
@@ -38,18 +38,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-3 sm:space-y-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Популярные курсы
-            </h2>
-            
-          </div>
-          
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+            Популярные курсы
+          </h2>
+          <Link
+            href="/courses"
+            className="text-xs sm:text-sm font-semibold text-emerald-600 hover:text-emerald-800 hover:underline"
+          >
+            Все курсы →
+          </Link>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
           {popularCourses.map((course) => (
             <CourseCard
               key={course.id}
@@ -62,8 +64,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
-    
     </div>
   );
 }
