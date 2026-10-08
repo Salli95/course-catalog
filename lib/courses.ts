@@ -7,65 +7,61 @@ export type Course = {
   likes: number;
 };
 
-const courses: Course[] = [
-  {
-    id: "modern-frontend",
-    title: "Modern Frontend: React & Next.js",
-    description: "React 19, Server Components, and the App Router.",
-    credits: 5,
-    isElective: false,
-    likes: 24,
-  },
-  {
-    id: "backend-fastapi",
-    title: "Backend Foundations: FastAPI",
-    description: "Async REST APIs in Python with FastAPI and Pydantic.",
-    credits: 5,
-    isElective: false,
-    likes: 19,
-  },
-  {
-    id: "databases-postgresql",
-    title: "Relational Databases: PostgreSQL",
-    description: "Schema design, SQLAlchemy, and migrations with Alembic.",
-    credits: 5,
-    isElective: false,
-    likes: 15,
-  },
-  {
-    id: "api-design",
-    title: "API Design: REST vs GraphQL",
-    description: "Comparing REST and GraphQL in practice.",
-    credits: 4,
-    isElective: true,
-    likes: 11,
-  },
-  {
-    id: "web-security",
-    title: "Web Security Essentials",
-    description: "JWT/OAuth2, defending against XSS, CSRF, SQL injection.",
-    credits: 4,
-    isElective: false,
-    likes: 21,
-  },
-  {
-    id: "ai-integration",
-    title: "AI/LLM Integration",
-    description: "LLM features in an app, wired up via the OpenAI API.",
-    credits: 5,
-    isElective: true,
-    likes: 32,
-  },
-];
+const API_URL = "http://127.0.0.1:8000";
 
-function delay<T>(value: T, ms = 300): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(value), ms));
+// Вспомогательная функция для маппинга данных из API (snake_case) во фронтенд (camelCase)
+function mapCourseFromApi(apiCourse: any): Course {
+  return {
+    id: apiCourse.id,
+    title: apiCourse.title,
+    description: apiCourse.description,
+    credits: apiCourse.credits,
+    isElective: apiCourse.is_elective, // Важное преобразование!
+    likes: apiCourse.likes,
+  };
 }
 
 export async function getCourses(): Promise<Course[]> {
-  return delay(courses);
+  try {
+    // Делаем запрос к нашему бэкенду на FastAPI
+    const res = await fetch(`${API_URL}/courses`, {
+      cache: "no-store", // Отключаем кэш, чтобы видеть актуальные данные
+    });
+    
+    if (!res.ok) {
+      console.error("Failed to fetch courses from API");
+      return [];
+    }
+    
+    const data = await res.json();
+    return data.map(mapCourseFromApi);
+  } catch (error) {
+    console.error("Error connecting to FastAPI:", error);
+    return [];
+  }
 }
 
 export async function getCourse(id: string): Promise<Course | undefined> {
-  return delay(courses.find((c) => c.id === id));
+  try {
+    const res = await fetch(`${API_URL}/courses/${id}`, {
+      cache: "no-store",
+    });
+    
+    // Если FastAPI вернул 404 (курс не найден), возвращаем undefined
+    // (А Next.js уже сам перехватит это и покажет not-found.tsx)
+    if (res.status === 404) {
+      return undefined;
+    }
+    
+    if (!res.ok) {
+      console.error(`Failed to fetch course ${id}`);
+      return undefined;
+    }
+    
+    const data = await res.json();
+    return mapCourseFromApi(data);
+  } catch (error) {
+    console.error(`Error connecting to FastAPI for course ${id}:`, error);
+    return undefined;
+  }
 }
