@@ -42,6 +42,9 @@ export default function RootLayout({
               <Link href="/courses" className="text-slate-600 hover:text-emerald-600 transition">
                 Курсы
               </Link>
+              <Link href="/filter" className="text-slate-600 hover:text-emerald-600 transition">
+                Фильтр
+              </Link>
               <Link href="/about" className="text-slate-600 hover:text-emerald-600 transition">
                 О проекте
               </Link>
@@ -82,6 +85,12 @@ export default function RootLayout({
                   className="flex items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
                 >
                   Курсы
+                </Link>
+                <Link
+                  href="/filter"
+                  className="flex items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
+                >
+                  Фильтр
                 </Link>
                 <Link
                   href="/about"

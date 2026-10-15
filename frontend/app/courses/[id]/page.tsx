@@ -5,17 +5,11 @@ import { getCourse, getCourses } from "@/lib/courses";
 import { detailsFor } from "@/lib/course-details";
 import LikeButton from "@/components/LikeButton";
 import CourseCard from "@/components/CourseCard";
+import EnrollForm from "@/components/EnrollForm";
 
 type CoursePageProps = {
   params: Promise<{ id: string }>;
 };
-
-export async function generateStaticParams() {
-  const allCourses = await getCourses();
-  return allCourses.map((c) => ({
-    id: c.id,
-  }));
-}
 
 export async function generateMetadata({
   params,
@@ -140,8 +134,14 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
             <div className="pt-2">
               <LikeButton key={course.id} courseId={course.id} initialLikes={course.likes} />
-              
             </div>
+          </div>
+
+          <div className="rounded-2xl border border-emerald-100 bg-white p-4 sm:p-6 shadow-xs space-y-4">
+            <h2 className="text-base font-bold text-slate-900">
+              Запись на курс
+            </h2>
+            <EnrollForm courseId={course.id} />
           </div>
         </aside>
       </div>
