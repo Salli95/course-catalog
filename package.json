@@ -2,13 +2,15 @@
   "name": "course-catalog-workspace",
   "version": "1.0.0",
   "private": true,
-  "description": "Fullstack course catalog project (Next.js frontend + FastAPI backend)",
+  "description": "Fullstack course catalog project (Next.js frontend + FastAPI backend + PostgreSQL DB)",
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
     "start": "npm --prefix frontend run start",
     "lint": "npm --prefix frontend run lint",
-    "test": "npm --prefix frontend run test"
+    "test": "npm --prefix frontend run test",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   }
 }
-

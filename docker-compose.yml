@@ -1,0 +1,65 @@
+services:
+  
+  db:
+    image: postgres:18-alpine
+    container_name: course-catalog-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: course_catalog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./DB/docker-init.sql:/docker-entrypoint-initdb.d/01-docker-init.sql:ro
+      - ./DB/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql:ro
+      - ./DB/seed.sql:/docker-entrypoint-initdb.d/03-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d course_catalog"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+
+  # ⚙️ Бэкенд на FastAPI (Python 3.12)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: course-catalog-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://catalog_app:change-me@db:5432/course_catalog
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+
+
+        
+
+  # 🎨 Фронтенд на Next.js 16 (React 19 + Tailwind CSS)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: course-catalog-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Внутри Docker Server Components обращаются к backend напрямую через внутреннюю сеть
+      - API_URL=http://backend:8000
+      # Браузер пользователя на хост-машине обращается через localhost:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+
