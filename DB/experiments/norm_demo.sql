@@ -1,4 +1,4 @@
--- norm_demo.sql: a flat registrations table for normalization experiments
+
 DROP TABLE IF EXISTS registrations;
 
 CREATE TABLE registrations (

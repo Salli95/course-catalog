@@ -13,7 +13,7 @@ INSERT INTO enrollments (course_id, student_id)
 SELECT 'course-' || (1 + (g + g / 20000) % 500), 1 + g % 20000
 FROM generate_series(1, 50000) AS g;
 
--- after loading, refresh the statistics the planner relies on
+
 ANALYZE courses;
 ANALYZE students;
 ANALYZE enrollments;

@@ -1,6 +1,4 @@
--- schema.sql: the course catalog database schema
--- The file can be run repeatedly: it first drops the old tables.
--- A teaching shortcut: real projects manage the schema with migrations.
+
 DROP TABLE IF EXISTS enrollments, students, courses;
 
 CREATE TABLE courses (
@@ -26,5 +24,5 @@ CREATE TABLE enrollments (
     UNIQUE (course_id, student_id)
 );
 
--- Index on the foreign key student_id (step 6): PostgreSQL doesn't create one.
+
 CREATE INDEX enrollments_student_id_idx ON enrollments (student_id);

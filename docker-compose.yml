@@ -9,9 +9,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
       - ./DB/docker-init.sql:/docker-entrypoint-initdb.d/01-docker-init.sql:ro
       - ./DB/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql:ro
       - ./DB/seed.sql:/docker-entrypoint-initdb.d/03-seed.sql:ro

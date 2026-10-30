@@ -1,4 +1,3 @@
--- seed.sql: initial data (the courses come from data.py in Labs 4 and 5)
 
 INSERT INTO courses (id, title, description, credits, is_elective, likes) VALUES
   ('modern-frontend', 'Modern Frontend: React & Next.js',
@@ -14,13 +13,12 @@ INSERT INTO courses (id, title, description, credits, is_elective, likes) VALUES
   ('ai-integration', 'AI/LLM Integration',
    'LLM features in an app via the OpenAI API.', 5, true, 32);
 
--- Three students (database generates IDs 1, 2, 3)
+
 INSERT INTO students (name, email) VALUES
   ('Aigerim Sadykova', 'aigerim@example.com'),
   ('Daniyar Bekov', 'daniyar@example.com'),
   ('Asel Omarova', 'asel@example.com');
 
--- Six enrollments: course_id and student_id
 INSERT INTO enrollments (course_id, student_id) VALUES
   ('modern-frontend', 1),
   ('ai-integration', 1),

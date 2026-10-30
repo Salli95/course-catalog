@@ -1,11 +1,6 @@
--- queries.sql: queries for the API routes (values are filled in as examples)
--- Queries that change data are wrapped in a transaction that rolls back,
--- so the file can be run as many times as you like.
 
 -- 1. GET /courses?is_elective=false&sort=popular&page=1&page_size=3
--- id, title, credits, likes; non-elective courses only;
--- most popular first (ties on likes — by id);
--- LIMIT and OFFSET for page 1
+--
 SELECT id, title, credits, likes
 FROM courses
 WHERE is_elective = false
@@ -48,17 +43,14 @@ ROLLBACK;
 
 -- 4. POST /enrollments
 BEGIN;
--- enroll the student with number 3 in the course 'web-security';
--- return id, course_id, and student_id (RETURNING)
+-
 INSERT INTO enrollments (course_id, student_id)
 VALUES ('web-security', 3)
 RETURNING id, course_id, student_id;
 ROLLBACK;
 
 -- 5. GET /enrollments
--- the enrollment number (id), the student's name (AS student), and
--- the course title (AS course); join the tables with JOIN;
--- order by the enrollment number
+
 SELECT e.id, s.name AS student, c.title AS course
 FROM enrollments e
 JOIN students s ON s.id = e.student_id
@@ -66,27 +58,10 @@ JOIN courses c ON c.id = e.course_id
 ORDER BY e.id;
 
 -- 6. statistics: enrollments per course, including courses with none
--- LEFT JOIN enrollments to courses; GROUP BY the course;
--- the number of enrollments — count(e.id) AS enrolled;
--- courses with the most enrollments first (ties — by id)
+
 SELECT c.id, count(e.id) AS enrolled
 FROM courses c
 LEFT JOIN enrollments e ON e.course_id = c.id
 GROUP BY c.id
 ORDER BY enrolled DESC, c.id;
 
-
--- 7. Bonus: courses without enrollments in alphabetical order
-SELECT c.id
-FROM courses c
-LEFT JOIN enrollments e ON e.course_id = c.id
-WHERE e.id IS NULL
-ORDER BY c.id;
-
--- 8. Bonus: students with more than one course (HAVING count > 1)
-SELECT s.name, count(*) AS courses
-FROM students s
-JOIN enrollments e ON e.student_id = s.id
-GROUP BY s.id, s.name
-HAVING count(*) > 1
-ORDER BY courses DESC, s.name;
